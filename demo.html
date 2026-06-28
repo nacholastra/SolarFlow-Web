@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T93WG8QK');</script>
+    <!-- End Google Tag Manager -->
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoNova | Instalación de Placas Solares</title>
+
+    <!-- ETIQUETAS SEO BÁSICAS PARA GOOGLE -->
+    <meta name="description" content="Pásate al autoconsumo con EcoNova. Calcula tu ahorro con nuestro simulador solar gratuito, instalación llave en mano y financiación al 100%. Empieza a ahorrar hoy.">
+    <meta name="keywords" content="placas solares, instalación fotovoltaica, energía solar, autoconsumo, simulador solar, paneles solares, ahorro energético">
+    <meta name="author" content="EcoNova">
+    <meta name="robots" content="index, follow">
+
+    <!-- ETIQUETAS OPEN GRAPH (Para vistas previas en WhatsApp, LinkedIn, Facebook, etc.) -->
+    <meta property="og:title" content="EcoNova | Descubre cuánto puedes ahorrar con energía solar">
+    <meta property="og:description" content="Usa nuestra calculadora gratuita y descubre la rentabilidad exacta de poner placas en tu tejado en menos de 1 minuto.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://solar-flow-web.vercel.app/demo.html"> <!-- CAMBIAR POR TU URL REAL CUANDO LO SUBAS -->
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }, 
+                    colors: { 
+                        brand: '#111827', /* Negro corporativo del panel */
+                        surface: '#fcfcfc',
+                        surface_alt: '#f8fafc'
+                    } 
+                } 
+            }
+        }
+    </script>
+    <style>
+        /* Animación suave para la entrada de elementos */
+        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-surface text-gray-800 font-sans antialiased selection:bg-brand selection:text-white">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T93WG8QK"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div class="text-xl font-bold tracking-tight text-brand">EcoNova</div>
+            </div>
+            <div class="hidden md:flex items-center gap-8 font-medium text-sm text-gray-500">
+                <a href="#beneficios" class="hover:text-brand transition-colors">Ventajas</a>
+                <a href="#proceso" class="hover:text-brand transition-colors">Proceso</a>
+                <a href="#garantia" class="hover:text-brand transition-colors">Garantías</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex items-center gap-2 text-sm font-semibold text-brand">
+                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    900 123 456
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative pt-28 pb-16 lg:pt-32 lg:pb-20 bg-surface_alt overflow-hidden border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+            
+            <!-- Columna Izquierda: Copywriting enfocado al dolor/beneficio -->
+            <div class="lg:col-span-6 space-y-8 fade-in-up">
+                
+                <h1 class="text-4xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-brand">
+                    Pásate al autoconsumo y reduce tu factura de luz a 0€.
+                </h1>
+                
+                <p class="text-lg text-gray-500 leading-relaxed max-w-lg font-medium">
+                    Instalamos placas solares en tu tejado con inversión inicial cero. Empieza a ahorrar desde el primer día mientras revalorizas tu propiedad.
+                </p>
+                
+                <div class="space-y-4 pt-2">
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                            <svg class="w-3.5 h-3.5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <p class="text-gray-700 font-medium">Gestionamos todas las subvenciones por ti (hasta 40%).</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                            <svg class="w-3.5 h-3.5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <p class="text-gray-700 font-medium">Instalación certificada en menos de 48 horas.</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                            <svg class="w-3.5 h-3.5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <p class="text-gray-700 font-medium">Financiación al 100% sin cambiar de banco.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 pt-6 border-t border-gray-200">
+                    <div class="flex -space-x-2">
+                        <!-- Estrellas simulando reseñas de Google -->
+                        <div class="flex text-amber-400">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="text-sm font-semibold text-gray-800">
+                        4.9/5 <span class="text-gray-500 font-medium">en más de 500 reseñas verificadas.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-6 relative lg:ml-8 fade-in-up delay-100">
+                <div class="relative bg-white p-2 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-200">
+                    
+                    <!-- Etiqueta decorativa -->
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md z-10">
+                        Calculadora Gratuita
+                    </div>
+
+                    <!-- ¡¡¡IMPORTANTE!!! CAMBIA "COLOCA_TU_ID_AQUI" POR TU ID DEL PANEL -->
+                    <iframe src="https://solar-flow-web.vercel.app/index.html?eid=9e60afb0-31f" width="100%" height="700" style="border:none; border-radius:16px;" title="Simulador Solar" ></iframe>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="border-b border-gray-200 bg-white py-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Equipamiento Tier-1 Garantizado</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale">
+                <!-- Logos simulados con texto limpio -->
+                <span class="text-xl font-black font-sans tracking-tighter">HUAWEI</span>
+                <span class="text-xl font-black font-sans tracking-tighter">Fronius</span>
+                <span class="text-xl font-bold font-serif tracking-tight">SunPower</span>
+                <span class="text-xl font-black font-sans tracking-wide">JINKO<span class="font-light">SOLAR</span></span>
+                <span class="text-xl font-black font-sans tracking-tighter">SMA</span>
+            </div>
+        </div>
+    </div>
+
+    <section id="beneficios" class="py-24 bg-surface">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand tracking-tight mb-4">¿Por qué instalar placas solares hoy?</h2>
+                <p class="text-gray-500 font-medium">La energía fotovoltaica dejó de ser el futuro para convertirse en la inversión más segura del presente.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Beneficio 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:border-gray-300 transition-all group">
+                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-brand mb-6 border border-gray-200 group-hover:bg-brand group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand mb-3">Ahorro Inmediato</h4>
+                    <p class="text-gray-500 leading-relaxed text-sm">Reduce tu factura de electricidad hasta en un 80% desde el primer mes. Protege a tu familia contra las constantes subidas del precio de la luz.</p>
+                </div>
+                <!-- Beneficio 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:border-gray-300 transition-all group">
+                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-brand mb-6 border border-gray-200 group-hover:bg-brand group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand mb-3">Revalorización</h4>
+                    <p class="text-gray-500 leading-relaxed text-sm">Una vivienda con sistema solar propio aumenta su valor de mercado automáticamente. Es una mejora patrimonial con un retorno de inversión de 4 a 6 años.</p>
+                </div>
+                <!-- Beneficio 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:border-gray-300 transition-all group">
+                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-brand mb-6 border border-gray-200 group-hover:bg-brand group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand mb-3">Tranquilidad Legal</h4>
+                    <p class="text-gray-500 leading-relaxed text-sm">Nos encargamos de todos los trámites burocráticos con tu ayuntamiento, gestión de excedentes y solicitud de subvenciones europeas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="proceso" class="py-24 bg-brand text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-6">El proceso más simple y transparente.</h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-10">Nuestro enfoque "Llave en mano" significa que tú solo tomas la decisión; nosotros ejecutamos el 100% del trabajo técnico y burocrático.</p>
+                    
+                    <div class="space-y-8">
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 shrink-0 rounded-full bg-white text-brand flex items-center justify-center font-bold text-sm">1</div>
+                            <div>
+                                <h5 class="text-lg font-bold mb-1">Simulación y Presupuesto</h5>
+                                <p class="text-sm text-gray-400">Usas la calculadora de esta web. Si te encajan los números, un ingeniero te llama para ajustar detalles técnicos sobre tu tejado.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 shrink-0 rounded-full bg-gray-800 text-gray-300 flex items-center justify-center font-bold text-sm border border-gray-700">2</div>
+                            <div>
+                                <h5 class="text-lg font-bold mb-1">Diseño Legal y Permisos</h5>
+                                <p class="text-sm text-gray-400">Presentamos el proyecto técnico en tu municipio y tramitamos las licencias necesarias para que la instalación cumpla la normativa vigente.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 shrink-0 rounded-full bg-gray-800 text-gray-300 flex items-center justify-center font-bold text-sm border border-gray-700">3</div>
+                            <div>
+                                <h5 class="text-lg font-bold mb-1">Instalación en 1-2 Días</h5>
+                                <p class="text-sm text-gray-400">Técnicos certificados montan la estructura sin dañar la cubierta. Dejamos todo configurado en tu app móvil para que veas tu energía en tiempo real.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <!-- Imagen de alta calidad estilo arquitectónico -->
+                    <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=800&q=80" alt="Instalación estética de paneles solares" class="rounded-2xl shadow-2xl relative z-10 border border-gray-800">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-surface_alt text-gray-500 py-12 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8 items-center text-sm font-medium">
+            <div class="text-center md:text-left">
+                <div class="text-xl font-bold tracking-tight text-brand mb-1">EcoNova</div>
+                <p>Especialistas en transición energética residencial e industrial.</p>
+            </div>
+            <div class="text-center flex justify-center gap-6">
+                <a href="#" class="hover:text-brand transition-colors">Política de Privacidad</a>
+                <a href="#" class="hover:text-brand transition-colors">Aviso Legal</a>
+            </div>
+            <div class="text-center md:text-right text-gray-400">
+                &copy; 2026 EcoNova. Todos los derechos reservados. <br>
+                <span class="text-xs">Desarrollado con tecnología SolarCRM.</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

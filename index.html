@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Solar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } } }
+    </script>
+    <style>
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .loader-small {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-transparent flex items-center justify-center min-h-screen p-2 font-sans text-gray-900">
+
+    <div class="bg-white w-full max-w-md overflow-hidden border border-gray-200 shadow-xl rounded-2xl relative">
+        
+        <!-- CABECERA PERSONALIZADA B2B -->
+        <div class="p-8 pb-6 border-b border-gray-100">
+            <h2 id="titulo-widget" class="text-2xl font-bold tracking-tight text-gray-900 mb-1">Cargando...</h2>
+            <p class="text-sm text-gray-500 font-medium">Calcula tu rentabilidad en España</p>
+        </div>
+
+        <div class="p-8 pt-6" id="form-container">
+            <form id="simulador-form" class="space-y-6">
+                
+                <!-- SELECTOR DE COMUNIDAD (CORREGIDO Y ANIMADO) -->
+                <div class="relative" id="custom-country-container">
+                    <label class="block text-gray-900 font-semibold mb-2 text-sm tracking-wide">Comunidad Autónoma</label>
+                    <input type="hidden" id="region_select" name="region" value="madrid">
+                    
+                    <button type="button" id="dropdown-trigger" class="w-full flex items-center justify-between p-3.5 bg-gray-50/50 border border-gray-200 rounded-xl hover:border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-900 transition-all duration-200">
+                        <div class="flex items-center gap-3" id="dropdown-selected-content">
+                            <span class="text-xl leading-none">📍</span>
+                            <span class="font-medium text-gray-900">Comunidad de Madrid</span>
+                        </div>
+                        <svg id="dropdown-icon" class="w-4 h-4 text-gray-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+
+                    <ul id="dropdown-menu" class="absolute z-30 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto no-scrollbar hidden opacity-0 transform scale-95 origin-top transition-all duration-200 py-1">
+                        <li data-value="andalucia" class="dropdown-item flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-sm transition-colors"><span class="text-lg">📍</span> Andalucía</li>
+                        <li data-value="madrid" class="dropdown-item flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-sm transition-colors"><span class="text-lg">📍</span> Comunidad de Madrid</li>
+                        <li data-value="cataluna" class="dropdown-item flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-sm transition-colors"><span class="text-lg">📍</span> Cataluña</li>
+                        <li data-value="valencia" class="dropdown-item flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-sm transition-colors"><span class="text-lg">📍</span> C. Valenciana</li>
+                        <li data-value="galicia" class="dropdown-item flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-sm transition-colors"><span class="text-lg">📍</span> Galicia</li>
+                        <li data-value="castilla_leon" class="dropdown-item flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-sm transition-colors"><span class="text-lg">📍</span> Castilla y León</li>
+                        <li data-value="pais_vasco" class="dropdown-item flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-sm transition-colors"><span class="text-lg">📍</span> País Vasco</li>
+                        <li data-value="canarias" class="dropdown-item flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer text-sm transition-colors"><span class="text-lg">📍</span> Canarias</li>
+                    </ul>
+                </div>
+
+                <!-- TIPO DE INMUEBLE -->
+                <div>
+                    <label class="block text-gray-900 font-semibold mb-2 text-sm tracking-wide">Tipo de inmueble</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="tipo_cliente" value="residencial" class="peer sr-only" checked>
+                            <div class="text-center p-3 border border-gray-200 rounded-xl peer-checked:bg-gray-900 peer-checked:text-white text-gray-600 hover:bg-gray-50 text-sm font-medium transition-all">Residencial</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="tipo_cliente" value="industrial" class="peer sr-only">
+                            <div class="text-center p-3 border border-gray-200 rounded-xl peer-checked:bg-gray-900 peer-checked:text-white text-gray-600 hover:bg-gray-50 text-sm font-medium transition-all">Comercial</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50/60 border border-emerald-100 rounded-xl p-3 text-center">
+                    <p class="text-xs text-emerald-800 font-medium">Ingresa tu Gasto o Consumo, calcularemos el otro.</p>
+                </div>
+
+                <!-- ENTRADA DE DATOS (EUROS Y KWH) -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="gasto_mensual" class="block text-gray-900 font-semibold mb-2 text-sm text-center">Gasto luz (€)</label>
+                        <input type="number" id="gasto_mensual" required min="1" placeholder="Ej: 100" class="w-full p-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-1 focus:ring-gray-900 outline-none font-bold text-center transition-all">
+                    </div>
+                    <div>
+                        <label for="consumo_kwh" class="block text-gray-900 font-semibold mb-2 text-sm text-center">Consumo (kWh)</label>
+                        <input type="number" id="consumo_kwh" required min="1" placeholder="Ej: 600" class="w-full p-3 bg-blue-50/50 border border-blue-200 text-blue-900 rounded-xl focus:ring-1 focus:ring-blue-600 outline-none font-bold text-center transition-all">
+                    </div>
+                </div>
+                
+                <input type="hidden" id="anos_estimados" value="20">
+
+                <div id="sim-error-message" class="hidden p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100"></div>
+
+                <button type="submit" id="btn-calcular" class="w-full bg-gray-900 text-white font-medium py-3.5 rounded-xl hover:bg-black mt-2 shadow-sm transition-all flex items-center justify-center gap-2">
+                    <span id="btn-calcular-spinner" class="loader-small hidden"></span>
+                    <span id="btn-calcular-text">Analizar Rentabilidad</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- PANTALLA RESULTADOS -->
+        <div id="resultado-container" class="hidden">
+            <div class="p-8 border-b border-gray-100 bg-gray-50/50 text-center">
+                <span class="text-xs font-bold text-gray-400 uppercase block tracking-wider">Proyección a 20 años</span>
+                <h3 class="text-gray-500 font-medium text-sm mt-1">Ahorro neto estimado</h3>
+                <div id="res-ahorro" class="text-4xl font-extrabold text-emerald-600 mt-1">0 €</div>
+            </div>
+            
+            <div class="p-8">
+                <div class="grid grid-cols-2 gap-6 mb-8 text-center">
+                    <div>
+                        <span class="block text-xs text-gray-400 uppercase font-semibold mb-1 tracking-wider">Retorno</span>
+                        <span id="res-tiempo" class="font-bold text-gray-800 text-lg">-</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-gray-400 uppercase font-semibold mb-1 tracking-wider">Inversión</span>
+                        <span id="res-inversion" class="font-bold text-gray-800 text-lg">0 €</span>
+                    </div>
+                </div>
+
+                <button id="btn-solicitar" class="w-full bg-gray-900 text-white font-medium py-3.5 rounded-xl hover:bg-black mb-3 shadow-sm transition-all">Solicitar Estudio Exacto</button>
+                <button type="button" id="btn-volver" class="w-full text-sm text-gray-500 hover:text-gray-900 py-2 transition-colors">Recalcular datos</button>
+            </div>
+        </div>
+
+        <!-- MODAL CAPTACIÓN -->
+        <div id="modal-lead" class="hidden absolute inset-0 bg-white/95 backdrop-blur-md z-40 flex flex-col justify-center">
+            <div class="p-8 relative h-full flex flex-col justify-center">
+                <button id="btn-cerrar-modal" class="absolute top-6 right-6 text-gray-400 hover:text-gray-900 p-2 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                
+                <div id="modal-form-content">
+                    <h3 class="font-bold text-2xl text-gray-900 mb-2">Casi listo</h3>
+                    <p class="text-sm text-gray-500 mb-6">Un ingeniero analizará tu perfil.</p>
+                    <div id="modal-error-message" class="hidden mb-5 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100"></div>
+                    
+                    <form id="lead-form" class="space-y-4">
+                        <input type="text" id="lead_nombre" placeholder="Nombre completo" required class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-1 focus:ring-gray-900 text-sm outline-none transition-all">
+                        <input type="email" id="lead_email" placeholder="Correo electrónico" required class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-1 focus:ring-gray-900 text-sm outline-none transition-all">
+                        
+                        <div class="flex relative">
+                            <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-gray-200 bg-gray-100 text-gray-600 text-sm font-medium">🇪🇸 +34</span>
+                            <input type="tel" id="lead_telefono" placeholder="600 000 000" minlength="9" maxlength="15" required class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-r-xl focus:ring-1 focus:ring-gray-900 text-sm outline-none transition-all">
+                        </div>
+
+                        <button type="submit" id="btn-enviar-lead" class="w-full bg-gray-900 text-white font-medium py-3.5 rounded-xl hover:bg-black mt-6 shadow-sm transition-all">Enviar Solicitud</button>
+                    </form>
+                </div>
+
+                <div id="modal-success-content" class="hidden text-center py-6">
+                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-100">
+                        <svg class="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">¡Recibido!</h3>
+                    <p class="text-gray-500 mb-8 text-sm">Nos pondremos en contacto muy pronto.</p>
+                    <button type="button" id="btn-cerrar-exito" class="w-full bg-gray-100 text-gray-900 font-medium py-3.5 rounded-xl hover:bg-gray-200 transition-all">Volver</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        const API_URL = "https://motor-solar-api.onrender.com/api/v1";
+        
+        // --- LÓGICA B2B (MÁGIA CAMALEÓNICA) ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const EMPRESA_ID = urlParams.get('eid') || 'eco_nova_demo'; 
+
+        async function personalizarWidget() {
+            try {
+                const res = await fetch(`${API_URL}/widget/config/${EMPRESA_ID}`);
+                const data = await res.json();
+                document.getElementById('titulo-widget').innerText = "Simulador " + data.nombre_empresa;
+            } catch (e) {
+                document.getElementById('titulo-widget').innerText = "Simulador Solar";
+            }
+        }
+        personalizarWidget();
+
+        let currentData = { gasto_mensual: 0, consumo_kwh: 0, tipo_cliente: '', anos_estimados: 20, region: 'madrid' };
+        
+        const DATOS_REGIONES = {
+            "andalucia": { hps: 1.6, costo_kwh: 0.14 },
+            "madrid": { hps: 1.5, costo_kwh: 0.15 },
+            "cataluna": { hps: 1.45, costo_kwh: 0.16 },
+            "valencia": { hps: 1.55, costo_kwh: 0.15 },
+            "galicia": { hps: 1.2, costo_kwh: 0.16 },
+            "castilla_leon": { hps: 1.35, costo_kwh: 0.15 },
+            "pais_vasco": { hps: 1.15, costo_kwh: 0.16 },
+            "canarias": { hps: 1.7, costo_kwh: 0.13 }
+        };
+
+        // --- LÓGICA DEL MENÚ DESPLEGABLE (AHORA SÍ, CON ANIMACIONES CORREGIDAS) ---
+        const dropdownTrigger = document.getElementById('dropdown-trigger');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const dropdownIcon = document.getElementById('dropdown-icon');
+        const regionInputHidden = document.getElementById('region_select');
+        const selectedContent = document.getElementById('dropdown-selected-content');
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+        const toggleDropdown = () => {
+            const isHidden = dropdownMenu.classList.contains('hidden');
+            if (isHidden) {
+                dropdownMenu.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    dropdownMenu.classList.remove('opacity-0', 'scale-95');
+                    dropdownMenu.classList.add('opacity-100', 'scale-100');
+                    dropdownIcon.classList.add('rotate-180');
+                    dropdownTrigger.classList.add('border-gray-900', 'ring-1', 'ring-gray-900');
+                });
+            } else {
+                dropdownMenu.classList.remove('opacity-100', 'scale-100');
+                dropdownMenu.classList.add('opacity-0', 'scale-95');
+                dropdownIcon.classList.remove('rotate-180');
+                dropdownTrigger.classList.remove('border-gray-900', 'ring-1', 'ring-gray-900');
+                setTimeout(() => dropdownMenu.classList.add('hidden'), 200);
+            }
+        };
+
+        dropdownTrigger.addEventListener('click', toggleDropdown);
+
+        // Cerrar al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('custom-country-container').contains(e.target) && !dropdownMenu.classList.contains('hidden')) {
+                toggleDropdown();
+            }
+        });
+
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', () => {
+                selectedContent.innerHTML = item.innerHTML;
+                regionInputHidden.value = item.getAttribute('data-value');
+                toggleDropdown();
+                
+                // Recalcular si ya hay datos escritos
+                const event = new Event('input');
+                document.getElementById('gasto_mensual').dispatchEvent(event);
+            });
+        });
+
+        // --- SINCRONIZACIÓN EUROS / KWH ---
+        const inGasto = document.getElementById('gasto_mensual');
+        const inKwh = document.getElementById('consumo_kwh');
+        
+        inGasto.addEventListener('input', (e) => {
+            const costo = DATOS_REGIONES[document.getElementById('region_select').value]?.costo_kwh || 0.15;
+            if(e.target.value) inKwh.value = (parseFloat(e.target.value) / costo).toFixed(0);
+            else inKwh.value = '';
+        });
+        inKwh.addEventListener('input', (e) => {
+            const costo = DATOS_REGIONES[document.getElementById('region_select').value]?.costo_kwh || 0.15;
+            if(e.target.value) inGasto.value = (parseFloat(e.target.value) * costo).toFixed(2);
+            else inGasto.value = '';
+        });
+
+        const formatoEuros = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+
+        // --- CALCULAR RESULTADOS (vía API — única fuente de verdad) ---
+        document.getElementById('simulador-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btn = document.getElementById('btn-calcular');
+            const btnText = document.getElementById('btn-calcular-text');
+            const btnSpinner = document.getElementById('btn-calcular-spinner');
+            const simError = document.getElementById('sim-error-message');
+
+            simError.classList.add('hidden');
+            btn.disabled = true;
+            btnText.textContent = 'Calculando...';
+            btnSpinner.classList.remove('hidden');
+
+            const gasto = parseFloat(inGasto.value);
+            const tipo = document.querySelector('input[name="tipo_cliente"]:checked').value;
+            const region = document.getElementById('region_select').value;
+            const anos = parseInt(document.getElementById('anos_estimados').value, 10) || 20;
+            const consumo = parseFloat(inKwh.value);
+
+            try {
+                const res = await fetch(`${API_URL}/simular`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        gasto_mensual: gasto,
+                        tipo_cliente: tipo,
+                        region: region,
+                        anos_estimados: anos,
+                        consumo_kwh: consumo || null
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    const detalle = data.detail;
+                    const mensaje = typeof detalle === 'string'
+                        ? detalle
+                        : Array.isArray(detalle)
+                            ? detalle.map(d => d.msg || d).join('. ')
+                            : 'No se pudo calcular la rentabilidad.';
+                    throw new Error(mensaje);
+                }
+
+                currentData = { gasto_mensual: gasto, consumo_kwh: consumo, tipo_cliente: tipo, anos_estimados: anos, region: region };
+
+                document.getElementById('res-ahorro').textContent = formatoEuros.format(data.ahorro_neto_total_eur);
+                document.getElementById('res-inversion').textContent = formatoEuros.format(data.inversion_estimada_eur);
+
+                const retorno = data.tiempo_retorno_anos;
+                document.getElementById('res-tiempo').textContent =
+                    typeof retorno === 'number' ? retorno + ' años' : retorno;
+
+                document.getElementById('form-container').classList.add('hidden');
+                document.getElementById('resultado-container').classList.remove('hidden');
+            } catch (error) {
+                simError.textContent = error.message || 'Error de red. Intenta nuevamente.';
+                simError.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = 'Analizar Rentabilidad';
+                btnSpinner.classList.add('hidden');
+            }
+        });
+
+        // --- NAVEGACIÓN ---
+        document.getElementById('btn-volver').addEventListener('click', () => {
+            document.getElementById('form-container').classList.remove('hidden');
+            document.getElementById('resultado-container').classList.add('hidden');
+        });
+
+        document.getElementById('btn-solicitar').addEventListener('click', () => {
+            document.getElementById('modal-lead').classList.remove('hidden');
+        });
+        
+        const cerrarModal = () => { document.getElementById('modal-lead').classList.add('hidden'); window.location.reload(); };
+        document.getElementById('btn-cerrar-modal').addEventListener('click', cerrarModal);
+        document.getElementById('btn-cerrar-exito').addEventListener('click', cerrarModal);
+
+        // --- ENVIAR LEAD AL DUEÑO (B2B SaaS) ---
+        document.getElementById('lead-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-enviar-lead');
+            btn.innerText = "Procesando..."; btn.disabled = true;
+
+            const telefonoCompleto = "+34 " + document.getElementById('lead_telefono').value;
+
+            const payload = {
+                empresa_id: EMPRESA_ID, 
+                gasto_mensual: currentData.gasto_mensual, 
+                anos_estimados: 20,
+                tipo_cliente: currentData.tipo_cliente, 
+                pais: currentData.region,
+                nombre: document.getElementById('lead_nombre').value,
+                telefono: telefonoCompleto,
+                email: document.getElementById('lead_email').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/leads`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    document.getElementById('modal-form-content').classList.add('hidden');
+                    document.getElementById('modal-success-content').classList.remove('hidden');
+                } else {
+                    document.getElementById('modal-error-message').textContent = "Error al guardar el contacto.";
+                    document.getElementById('modal-error-message').classList.remove('hidden');
+                    btn.innerText = "Enviar Solicitud"; btn.disabled = false;
+                }
+            } catch (error) {
+                document.getElementById('modal-error-message').textContent = "Error de red. Intenta nuevamente.";
+                document.getElementById('modal-error-message').classList.remove('hidden');
+                btn.innerText = "Enviar Solicitud"; btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
